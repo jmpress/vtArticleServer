@@ -3,13 +3,19 @@
 <div>
 {{#if article}}
     {{#each article}}
-        <h2>{{this.title}}</h2>
-        <h3>{{this.sub_title}}</h3>
-        <h4>{{this.date}}</h4>
-        <p>{{this.content}}</p>
+        <article>
+            <div>
+                <h3>{{this.title}}</h3>
+                <p>{{this.sub_title}}</p>
+                <strong>{{this.date}}</strong>
+                <p>{{this.content}}</p>
+            </div>
+            <img class="article-img" src="../public/img/content/homemovies01.jpg"/>
+        </article>
     {{/each}}
+
 {{else}}
     <p>There are currently no articles.</p>
 {{/if}}
-<a href="/article/new">Write a new Article</a>
 </div>
+<a href="/article/new">Write a new Article</a>

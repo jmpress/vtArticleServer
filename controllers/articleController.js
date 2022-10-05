@@ -32,7 +32,6 @@ articleRouter.route('/new')
     })
     .post(async (req, res, next) => {
         const {title, sub_title, content} = req.body;
-        console.log(req.body);
         const newArticle = {
             title,
             sub_title,
