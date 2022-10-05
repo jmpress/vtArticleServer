@@ -1,0 +1,15 @@
+<h1>vtArticleServer</h1>
+<h3>Articles for my personal site</h3>
+<div>
+{{#if article}}
+    {{#each article}}
+        <h2>{{this.title}}</h2>
+        <h3>{{this.sub_title}}</h3>
+        <h4>{{this.date}}</h4>
+        <p>{{this.content}}</p>
+    {{/each}}
+{{else}}
+    <p>There are currently no articles.</p>
+{{/if}}
+<a href="/article/new">Write a new Article</a>
+</div>

@@ -1,0 +1,56 @@
+<h1> {{article.fileName}}</h1>
+
+<img src="{{article.articleURL}}"> 
+{{#if comment}}
+    <table id="comments" class = "styled-table">
+        <!--
+        <thead>
+            <th>User-submitted comments</th>
+        </thead>
+        -->
+        <tbody>
+        {{#each comment}}
+            <tr><td>{{this.dataValues.commentContent}}</td></tr>
+        {{/each}}
+        </tbody>
+    </table>
+{{else}}
+    <p>No comments for this article yet! Submit one below!</p>
+{{/if}}
+
+{{#if user}}
+    <div id="inputFieldArea">
+            <form action="/article/comment/new" method="POST">
+                <label for="newCap">Your comment:</label>
+                <input name="newCap" id="newCap" type = "text" required/>
+                
+                <INPUT type="submit" value="Submit"> <INPUT type="reset"/>
+                <!--hidden values: -->
+                <input name="userID" id="userID" type = "text" value="{{user.id}}" hidden>
+                <input name="articleID" id="articleID" type = "text" value="{{article.id}}" hidden>
+                <br/>
+            </form>
+    </div>
+    <div id="logout">
+        <form action="/auth/logout" method="POST">
+            Logged in as {{user.email}}
+            <INPUT type="submit" value="Logout">
+        </form>
+    </div>
+
+{{else}}
+<p>Guests accounts can browse freely. <br> Registered users can submit comments.</p>
+    <form action="/auth/login" method="POST">
+    <label for="userEmail">Email:</label>
+    <input name="username" id="userEmail" type = "text" required><br>
+    
+    <label for="passWord">Password</label>
+    <input name="password" id="passWord" type = "password" required><br>
+    <INPUT type="submit" value="Log In"> <INPUT type="reset">
+</form>
+<br>
+<form action="/auth/register" method="GET">
+    <input id="register" type="submit" value="Register">
+</form>
+{{/if}}
+<a href="/article/all">Back to article index.</a><br>
