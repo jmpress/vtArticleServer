@@ -6,33 +6,50 @@ X    An endpoint to add comments to a specific article.
 
 const express = require('express');
 const Router = require('express-promise-router');
-const { ObjectId } = require('mongodb');
-const articleRouter = new Router();
+const adminRouter = new Router();
 //const articleCache = require('../utils/cache');
 const db = require('../db/db');
 const { sanitizeInput } = require('../utils/utils');
 
 
 
-articleRouter.get('/all', async (req, res, next) => {
+adminRouter.get('/all', async (req, res, next) => {
     const dbConnect = await db.connectToCluster();
     const dbName = dbConnect.db('vt-blog');
     const colName = dbName.collection('articles');
     articles = await colName.find({}).sort({_id: 1}).toArray();
 
     await dbConnect.close()
-    res.status(200).send(articles); 
+    res.render('articleBrowser', {article: articles}); 
 });
 
-articleRouter.get('/:id', async (req, res, next) => {  
+adminRouter.route('/new')
+    .get((req, res, next) => {
+        res.render('newArticle') 
+    })
+    .post(async (req, res, next) => {
+        const {title, sub_title, content} = req.body;
+        const newArticle = {
+            title,
+            sub_title,
+            date: new Date(),
+            content
+        }
+        const dbConnect = await db.connectToCluster();
+        const dbName = dbConnect.db('vt-blog');
+        const colName = dbName.collection('articles');
+        await colName.insertOne(newArticle);
+        await dbConnect.close();
+
+        res.redirect('/admin/all');
+    });
+
+adminRouter.get('/:id', async (req, res, next) => {  
     let target=req.params.id;
+    
     //find article by ID
-    const dbConnect = await db.connectToCluster();
-    const dbName = dbConnect.db('vt-blog');
-    const colName = dbName.collection('articles');
-    targetArticle = await colName.findOne({_id: ObjectId(target)});
-    await dbConnect.close();
-    res.status(200).send(targetArticle);
+        
+    res.render('articleDetail', {article: targetArticle});
 });
 
 /*
@@ -80,4 +97,4 @@ function validateComment(req, res, next){
     next();
 }
 
-module.exports = articleRouter;
+module.exports = adminRouter;

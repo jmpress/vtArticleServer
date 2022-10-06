@@ -26,6 +26,9 @@ h3 {
   font-family: 'Inconsolata', sans-serif;
 }
 
+.login {
+  align-items: center;
+}
 
 a.btn {
   display: inline-flex;
