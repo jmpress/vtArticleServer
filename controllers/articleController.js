@@ -10,18 +10,22 @@ const { ObjectId } = require('mongodb');
 const articleRouter = new Router();
 //const articleCache = require('../utils/cache');
 const db = require('../db/db');
-const { sanitizeInput } = require('../utils/utils');
+const { sanitizeInput, normalizeAPIResponse } = require('../utils/utils');
 
 
 
-articleRouter.get('/all', async (req, res, next) => {
+articleRouter.get('/', async (req, res, next) => {
     const dbConnect = await db.connectToCluster();
     const dbName = dbConnect.db('vt-blog');
     const colName = dbName.collection('articles');
-    articles = await colName.find({}).sort({_id: 1}).toArray();
-
+    articles = await colName.find({}).sort({_id: -1}).toArray();
     await dbConnect.close()
-    res.status(200).send(articles); 
+    
+    //convert array of documents into JSON:API standard
+    normalizedArticles = normalizeAPIResponse(articles);
+    //jsonArticles = JSON.stringify(articles);
+    
+    res.status(200).send(normalizedArticles); 
 });
 
 articleRouter.get('/:id', async (req, res, next) => {  

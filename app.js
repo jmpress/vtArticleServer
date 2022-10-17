@@ -110,7 +110,7 @@ app.get('/', (req, res, next) => {
   res.redirect('/auth/login');
 });
 
-app.use('/article', articleRouter);
+app.use('/articles', articleRouter);
 app.use('/auth', authRouter);
 app.use('/admin', ensureAuthenticated, adminRouter);
 

@@ -17,7 +17,7 @@ adminRouter.get('/all', async (req, res, next) => {
     const dbConnect = await db.connectToCluster();
     const dbName = dbConnect.db('vt-blog');
     const colName = dbName.collection('articles');
-    articles = await colName.find({}).sort({_id: 1}).toArray();
+    articles = await colName.find({}).sort({_id: -1}).toArray();
 
     await dbConnect.close()
     res.render('articleBrowser', {article: articles}); 
@@ -30,6 +30,7 @@ adminRouter.route('/new')
     .post(async (req, res, next) => {
         const {title, sub_title, content} = req.body;
         const newArticle = {
+            type: 'article',
             title,
             sub_title,
             date: new Date(),

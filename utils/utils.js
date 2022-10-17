@@ -30,4 +30,33 @@ function sanitizeInput(stringle, numChar){
     return stringle;
 }
 
-module.exports = { makeSaltedHash, comparePasswords, sanitizeInput };
+function normalizeAPIResponse(rawObj){
+    console.log(rawObj);
+    let normalizedArray = []
+    let normalizedObj = {}
+    for(let i = 0; i<rawObj.length; i++){
+        let id=rawObj[i]._id;
+        let type = rawObj[i].type;
+        attributes = {
+            title: rawObj[i].title,
+            subtitle: rawObj[i].sub_title,
+            date: rawObj[i].date,
+            content: rawObj[i].content
+        }
+        let newObj = {
+            id: id,
+            type: type,
+            attributes: attributes
+        }
+        console.log(`newObj[${i}]: ${newObj}`)
+        normalizedArray.push(newObj);
+    }
+    console.log(`normalizedArray = ${normalizedArray}`)
+    normalizedObj = {
+        data: normalizedArray
+    }
+    console.log(normalizedObj)
+    return normalizedObj;
+}
+
+module.exports = { makeSaltedHash, comparePasswords, sanitizeInput, normalizeAPIResponse };
