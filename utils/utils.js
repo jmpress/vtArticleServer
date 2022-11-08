@@ -12,8 +12,10 @@ async function makeSaltedHash(plain_pass){
 }
 
 async function comparePasswords(password, hash){
+    console.log(`Inside comparePasswords()| inputPass: ${password}, dbPass: ${user.password}`)
     try{
         const matchFound = await bcrypt.compare(password, hash);
+        console.log(`matchFound = ${matchFound}`);
         return matchFound;
     } catch(err) {
         console.log(err);

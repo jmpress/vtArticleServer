@@ -23,7 +23,6 @@ articleRouter.get('/', async (req, res, next) => {
     
     //convert array of documents into JSON:API standard
     normalizedArticles = normalizeAPIResponse(articles);
-    //jsonArticles = JSON.stringify(articles);
     
     res.status(200).send(normalizedArticles); 
 });
@@ -41,9 +40,9 @@ articleRouter.get('/:id', async (req, res, next) => {
 
 /*
 articleRouter.post('/comment/new', validatecomment, async (req, res, next) => {
-    const { newCap, userID, articleID } = req.body;
+    const { newCom, userID, articleID } = req.body;
     const usercomment = {
-        commentContent: newCap,
+        commentContent: newCom,
         articleID,
         commenterID: userID,
         rating: 0

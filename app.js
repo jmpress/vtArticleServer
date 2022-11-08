@@ -35,7 +35,7 @@ app.set('views', './views');
 app.set('view engine', 'handlebars');
 
 // Set localHost port to listen at
-const PORT = process.env.PORT || 3000;
+const PORT = 80;
 
 // Add middware for parsing request bodies here:
 app.use(express.json());
@@ -92,10 +92,12 @@ passport.use(
 
     if(!result){return done(new Error('no result in db'));}
     user = result[0];
+    console.log(`inputPass: ${password}, dbPass: ${user.password}`)
       if (!user) {
           console.log('Incorrect username.');
           return done(null, false, { message: 'Incorrect username.' });
-      } else if (!comparePasswords(password, user.password)) {
+      } else if (!(await comparePasswords(password, user.password))) {
+          console.log(`pass comparison failed`)
           console.log('Incorrect password');
           return done(null, false, { message: 'Incorrect password.' });
       } else {
@@ -117,7 +119,7 @@ app.use('/admin', ensureAuthenticated, adminRouter);
 
 // Add your code to start the server listening at PORT below:   
 app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
+    console.log(`Server inside container is listening on port ${PORT}`);
 });
 
 function ensureAuthenticated(req, res, next) {
